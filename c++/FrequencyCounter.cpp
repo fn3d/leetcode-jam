@@ -19,6 +19,7 @@ output:     bool
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <map>
 
 using namespace std;
 
@@ -48,9 +49,44 @@ bool same_without_frequency_counting(vector<int>& array1, vector<int>& array2) {
     return true;
 }
 
-int main() {
-    vector<int> array1 = {2, 3, 4, 5, 6};
-    vector<int> array2 = {4, 9, 16, 25, 36};
+bool same_with_frequency_counting_case1(vector<int>& array1, vector<int>& array2) {
 
-    std::cout << same_without_frequency_counting(array1, array2) << '\n' << '\n';
+    // Return false if the arrays have different lengths
+    if (array1.size() != array2.size()) {
+        return false;
+    }
+
+    std::map<std::string, int> freqCounter1 = {};
+    std::map<std::string, int> freqCounter2 = {};
+
+    // Populate freqCounter1 with the frequency of each element in array1 and array2
+    for (int i = 0; i < array1.size(); i++) {
+        freqCounter1[std::to_string(array1[i])] = freqCounter1[std::to_string(array1[i])] + 1;
+    }
+
+    for (int i = 0; i < array2.size(); i++) {
+        freqCounter2[std::to_string(array2[i])] = freqCounter2[std::to_string(array2[i])] + 1;
+    }
+
+    // Iterate through the keys in freqCounter1
+    std::map<std::string, int>::iterator it;
+    for (it = freqCounter1.begin(); it != freqCounter1.end(); it++) {
+        // Compute the square to compare with freqCounter1 entries
+        int key = std::stoi(it->first) * std::stoi(it->first);
+        // Now check if the calculated square exist as a key in freqCounter2,
+        // and that the frequencies in both hashmaps is the same for related.
+        if ((freqCounter2.count(std::to_string(key)) == 0) ||  \
+            (freqCounter1[it->first] != freqCounter2[std::to_string(key)])) {
+                return false;
+            }
+    }
+
+    return true;
+}
+
+int main() {
+    vector<int> array1 = {2, 3, 4, 5, 6, 7};
+    vector<int> array2 = {4, 9, 16, 25, 36, 49};
+
+    std::cout << same_with_frequency_counting_case1(array1, array2) << '\n';
 }
