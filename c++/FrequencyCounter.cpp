@@ -2,15 +2,15 @@
 
 A simple implementation of the Frequency Counter problem solving pattern.
 
-function:   same_without_frequency_counting
+function:   sameWithoutFrequencyCounting (O(n^2))
 input:      array1, array2
 output:     bool
 
-function:   same_with_frequency_counting_case1
+function:   sameWithFrequencyCounting (O(n))
 input:      array1, array2
 output:     bool
 
-function:   same_with_frequency_counting_case2
+function:   validAnagram (O(n))
 intput:     array1, array2
 output:     bool
 
@@ -23,7 +23,7 @@ output:     bool
 
 using namespace std;
 
-bool same_without_frequency_counting(vector<int>& array1, vector<int>& array2) {
+bool sameWithoutFrequencyCounting(vector<int>& array1, vector<int>& array2) {
     
     // Return false if the arrays have different lengths
     if (array1.size() != array2.size()) {
@@ -49,7 +49,7 @@ bool same_without_frequency_counting(vector<int>& array1, vector<int>& array2) {
     return true;
 }
 
-bool same_with_frequency_counting_case1(vector<int>& array1, vector<int>& array2) {
+bool sameWithFrequencyCounting(vector<int>& array1, vector<int>& array2) {
 
     // Return false if the arrays have different lengths
     if (array1.size() != array2.size()) {
@@ -84,9 +84,40 @@ bool same_with_frequency_counting_case1(vector<int>& array1, vector<int>& array2
     return true;
 }
 
+bool validAnagram(std::string& str1, std::string& str2) {
+
+    std::map<char, int> freqCounter = {};
+
+    for (int i = 0; i < str1.length() ; i++) {
+        char currentElement = str1[i];
+        freqCounter[currentElement] = freqCounter[currentElement] + 1;
+    }
+
+    // We run through the second string to find each character
+    // in the frequency counter map, and decrement counter in the
+    // map every time we find a specific character.
+    std::string::iterator itr;
+    for (int i = 0; i < str2.length(); i++) {
+        itr = std::find(str2.begin(), str2.end(), freqCounter[i]);
+        if (itr == str2.end()) {
+            cout << "chicken" << endl;
+            return false;
+        } else {
+            freqCounter[i] -= 1;
+        }
+    }
+    
+    return true;
+}
+
 int main() {
     vector<int> array1 = {2, 3, 4, 5, 6, 7};
     vector<int> array2 = {4, 9, 16, 25, 36, 49};
 
-    std::cout << same_with_frequency_counting_case1(array1, array2) << '\n';
+    //std::cout << sameWithFrequencyCounting(array1, array2) << '\n';
+
+    std::string testStr1 = "color";
+    std::string testStr2 = "cloor";
+
+    cout << validAnagram(testStr1, testStr2) << endl;
 }
