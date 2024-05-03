@@ -20,6 +20,7 @@ output:     bool
 #include <vector>
 #include <algorithm>
 #include <map>
+#include <typeinfo>
 
 using namespace std;
 
@@ -88,36 +89,41 @@ bool validAnagram(std::string& str1, std::string& str2) {
 
     std::map<char, int> freqCounter = {};
 
-    for (int i = 0; i < str1.length() ; i++) {
-        char currentElement = str1[i];
-        freqCounter[currentElement] = freqCounter[currentElement] + 1;
+    for (char c : str1) {
+        freqCounter[c]++;
     }
 
     // We run through the second string to find each character
     // in the frequency counter map, and decrement counter in the
     // map every time we find a specific character.
-    std::string::iterator itr;
-    for (int i = 0; i < str2.length(); i++) {
-        itr = std::find(str2.begin(), str2.end(), freqCounter[i]);
-        if (itr == str2.end()) {
-            cout << "chicken" << endl;
+    for (char c : str2) {
+        // If finding through the characters leads us to the end,
+        // or if we have already decremented the current character
+        // all the way to zero...
+        if (freqCounter.find(c) == freqCounter.end() || freqCounter[c] == 0) {
             return false;
         } else {
-            freqCounter[i] -= 1;
+            freqCounter[c]--;
         }
     }
-    
+
+    // Check if all the items in freqCounter have been used up
+    // to ensure one string is indeed an anagram of the other.
+    for (const auto& pair : freqCounter) {
+        if (pair.second != 0) {
+            return false;
+        }
+    }
+
     return true;
 }
 
 int main() {
     vector<int> array1 = {2, 3, 4, 5, 6, 7};
     vector<int> array2 = {4, 9, 16, 25, 36, 49};
-
-    //std::cout << sameWithFrequencyCounting(array1, array2) << '\n';
+    std::cout << sameWithFrequencyCounting(array1, array2) << '\n';
 
     std::string testStr1 = "color";
-    std::string testStr2 = "cloor";
-
-    cout << validAnagram(testStr1, testStr2) << endl;
+    std::string testStr2 = "olorc";
+    std::cout << validAnagram(testStr1, testStr2) << '\n' << '\n';
 }
