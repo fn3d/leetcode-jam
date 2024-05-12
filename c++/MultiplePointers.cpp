@@ -5,12 +5,16 @@ pair of elements that sum to zero, if one exists. If no such pair is found,
 the function should return an empty array.
 
 function:   sumZeroWithoutMultiplePointers (O(n^2))
-input:      vector array1, vector array2
-output:     vector
+input:      vector arr (sorted array of integers)
+output:     vector (integers in the list that add up to zero)
 
 function:   sumZeroWithMultiplePointers (O(n))
-input:      vector array1, vector array2
-output:     vector
+input:      vector arr (sorted array of integers)
+output:     vector (integers in the list that add up to zero)
+
+function:   countUniqueValues
+input:      vector arr (sorted array of integers)
+output:     int (arr of unique values in the array)
 
 */
 
@@ -19,13 +23,13 @@ output:     vector
 
 using namespace std;
 
-vector<int> sumZeroWithoutMultiplePointers(vector<int>& number) {
+vector<int> sumZeroWithoutMultiplePointers(vector<int>& arr) {
     vector<int> result = {NULL, NULL};
-    for (int i = 0; i < number.size(); i++) {
-        for (int j = i + 1; j < number.size(); j++) {
-            if (number[i] + number[j] == 0) {
-                result[0] = number[i];
-                result[1] = number[j];
+    for (int i = 0; i < arr.size(); i++) {
+        for (int j = i + 1; j < arr.size(); j++) {
+            if (arr[i] + arr[j] == 0) {
+                result[0] = arr[i];
+                result[1] = arr[j];
                 return result;
             }
         }
@@ -33,16 +37,16 @@ vector<int> sumZeroWithoutMultiplePointers(vector<int>& number) {
     return result;
 }
 
-vector<int> sumZeroWithMultiplePointers(vector<int>& number) {
+vector<int> sumZeroWithMultiplePointers(vector<int>& arr) {
     int left = 0;
-    int right = number.size() - 1;
+    int right = arr.size() - 1;
     vector<int> result = {NULL, NULL};
 
     while (left < right) {
-        const int sum = number[left] + number[right];
+        const int sum = arr[left] + arr[right];
         if (sum == 0) {
-            result[0] = number[left];
-            result[1] = number[right];
+            result[0] = arr[left];
+            result[1] = arr[right];
             return result;
         } else if (sum > 0) {
             right--;
@@ -51,6 +55,10 @@ vector<int> sumZeroWithMultiplePointers(vector<int>& number) {
         }
     }
     return result;
+}
+
+int countUniqueValues(vector<int>& arr) {
+
 }
 
 int main() {
