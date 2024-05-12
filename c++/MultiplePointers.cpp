@@ -12,7 +12,7 @@ function:   sumZeroWithMultiplePointers (O(n))
 input:      vector arr (sorted array of integers)
 output:     vector (integers in the list that add up to zero)
 
-function:   countUniqueValues
+function:   countUniqueValues (O(n))
 input:      vector arr (sorted array of integers)
 output:     int (arr of unique values in the array)
 
@@ -24,6 +24,7 @@ output:     int (arr of unique values in the array)
 using namespace std;
 
 vector<int> sumZeroWithoutMultiplePointers(vector<int>& arr) {
+    
     vector<int> result = {NULL, NULL};
     for (int i = 0; i < arr.size(); i++) {
         for (int j = i + 1; j < arr.size(); j++) {
@@ -38,6 +39,7 @@ vector<int> sumZeroWithoutMultiplePointers(vector<int>& arr) {
 }
 
 vector<int> sumZeroWithMultiplePointers(vector<int>& arr) {
+    
     int left = 0;
     int right = arr.size() - 1;
     vector<int> result = {NULL, NULL};
@@ -58,7 +60,29 @@ vector<int> sumZeroWithMultiplePointers(vector<int>& arr) {
 }
 
 int countUniqueValues(vector<int>& arr) {
+    
+    if (arr.size() == 0) {
+        return 0;
+    }
 
+    int i = 0;
+
+    // Because we visit one value only once to compare it
+    // with other items in the array, instead of running
+    // a nested for loop, we will just replace the current
+    // item being pointed to with the item it is being
+    // evaluated with, so that we automatically pull the
+    // next value when comparing it with the ones ahead.
+    // This will give O(n) time complexity instead of O(n^2)
+    // if nested for loop was used.
+    for (int j = 1; j < arr.size(); j++) {
+        if (arr[i] != arr[j]) {
+            i++;
+            arr[i] = arr[j];
+        }
+    }
+
+    return i + 1;
 }
 
 int main() {
