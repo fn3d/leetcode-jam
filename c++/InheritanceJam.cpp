@@ -56,7 +56,17 @@ class TestDerivedClass : TestBaseClass<T> {
         T someAdditionalData;
     public:
         TestDerivedClass() : someAdditionalData(T()) { };
-        TestDerivedClass(T val) : someAdditionalData(val) { };
+        /*
+        This constructor list is responsible for setting the base
+        class' internal variable by passing baseVal to the base
+        class' constructor and also using <T> to ensure the base
+        class undertands what type we are dealing with. And second
+        in the list is the derived class' interval variable which
+        is being set using standard method of passing the value to
+        the variable.
+        */
+        TestDerivedClass(T val, T baseVal) : TestBaseClass<T>(baseVal), 
+            someAdditionalData(val) { };
 };
 
 int main() {
